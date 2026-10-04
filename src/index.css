@@ -1,0 +1,121 @@
+.inputBox {
+  width: 60%;
+  height: 56px;
+  padding: 0 20px;
+  border: 1px solid #e5e5e5;
+  border-radius: 30px;
+  font-size: 18px;
+  outline: none;
+}
+
+.dashboard,
+.eventForm,
+.help {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 40px 20px;
+}
+
+/* Stat section */
+.eventStat {
+  display: flex;
+  justify-content: center;
+  gap: 60px;
+  width: 100%;
+}
+
+.eventStat div {
+  width: 180px;
+  padding: 20px;
+  text-align: center;
+  background-color: antiquewhite;
+  border-radius: 50px;
+}
+
+/* Event card once evnts have been added */
+.eventCard {
+  width: 100%;
+  margin: 20px auto;
+  padding: 20px;
+  background: antiquewhite;
+  border-radius: 15px;
+}
+
+/* Register&Login pages */
+label {
+  display: block;
+  margin-bottom: 8px;
+  font-size: 18px;
+  font-weight: 400;
+}
+
+ul {
+  list-style: none;
+  padding-left: 25px;
+  font-size: 14px;
+  line-height: 1.8;
+}
+
+ul li {
+  margin-bottom: 4px;
+}
+
+button {
+  padding: 10px 18px;
+  border: none;
+  border-radius: 6px;
+  background-color: #e5e5e5;
+  font-size: 14px;
+}
+
+/* navbar styling */
+header {
+  width: 100%;
+  padding: 15px 40px;
+  border-bottom: 1px solid #ddd;
+  background-color: rgb(249, 200, 135);
+}
+
+header div {
+  max-width: 1100px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+header h1 {
+  margin: 0;
+  font-size: 40px;
+}
+
+.NavLinks div {
+  display: flex;
+  align-items: center;
+  gap: 25px;
+}
+
+.NavLinks a {
+  color: #333;
+  text-decoration: none;
+  font-size: 18px;
+}
+
+@media (max-width: 600px) {
+  header {
+    padding: 20px;
+  }
+
+  header div {
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  .NavLinks div {
+    flex-direction: column;
+    gap: 12px;
+  }
+}
