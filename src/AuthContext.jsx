@@ -2,37 +2,75 @@ import { useState, useContext, createContext } from "react";
 
 const AuthContext = createContext();
 
+// save registered/logged in users in localStorage
+// So that users can only see their own events.
 export function AuthProvider({ children }) {
   const [user, setUser] = useState(() => {
-    const savedUser = localStorage.getItem("gatherlyUser");
-
-    if (savedUser) {
-      return JSON.parse(savedUser);
-    }
-
-    return null;
+    const savedUser = localStorage.getItem("gotPlansCurrentUser");
+    return savedUser ? JSON.parse(savedUser) : null;
   });
 
   function register(userData) {
-    localStorage.setItem("gatherlyUser", JSON.stringify(userData));
+    let savedUsers = [];
+    // try-catch block incase of an error occuring.
+    try {
+      const storedData = localStorage.getItem("gotPlansUsers");
+      savedUsers = storedData ? JSON.parse(storedData) : [];
+
+      if (!Array.isArray(savedUsers)) {
+        savedUsers = [];
+      }
+    } catch (error) {
+      console.error("Could not read registered users:", error);
+      savedUsers = [];
+    }
+
+    //id for users upon registration
+    const newUser = {
+      ...userData,
+      userId: crypto.randomUUID(),
+    };
+
+    savedUsers.push(newUser);
+
+    localStorage.setItem("gotPlansUsers", JSON.stringify(savedUsers));
+
+    return {
+      success: true,
+      message: "Registration successful. Please log in.",
+    };
   }
 
   function login(email, password) {
-    const savedUser = localStorage.getItem("gatherlyUser");
+    let savedUsers = [];
 
-    if (!savedUser) {
+    try {
+      const storedData = localStorage.getItem("gotPlansUsers");
+
+      savedUsers = storedData ? JSON.parse(storedData) : [];
+
+      if (!Array.isArray(savedUsers)) {
+        return {
+          success: false,
+          message: "Saved account data is invalid. Check local storage",
+        };
+      }
+    } catch (error) {
+      console.error("Error reading saved accounts:", error);
+
       return {
         success: false,
-        message: "Register first so you can use out app. You have no account.",
+        message: "Could not read saved accounts",
       };
     }
 
-    const registeredUser = JSON.parse(savedUser);
+    const registeredUser = savedUsers.find(
+      (savedUser) =>
+        savedUser.email.toLowerCase() === email.toLowerCase() &&
+        savedUser.password === password,
+    );
 
-    if (
-      registeredUser.email !== email ||
-      registeredUser.password !== password
-    ) {
+    if (!registeredUser) {
       return {
         success: false,
         message: "Maybe it's an incorrect email or password",
@@ -41,6 +79,8 @@ export function AuthProvider({ children }) {
 
     setUser(registeredUser);
 
+    localStorage.setItem("gotPlansCurrentUser", JSON.stringify(registeredUser));
+
     return {
       success: true,
     };
@@ -48,6 +88,7 @@ export function AuthProvider({ children }) {
 
   function logout() {
     setUser(null);
+    localStorage.removeItem("gotPlansCurrentUser");
   }
 
   return (

@@ -1,8 +1,14 @@
 import EventCard from "./EventCard";
 import { useNavigate } from "react-router-dom";
+import { useAuth } from "../AuthContext";
 
 export default function EventList({ events = [], onDelete }) {
   const navigate = useNavigate();
+  //attaches id to events, so that users only sees their own events
+  const { user } = useAuth();
+
+  // filters which event show on the ui
+  const userEvents = events.filter((event) => event.userId === user?.userId);
 
   if (events.length === 0) {
     return (

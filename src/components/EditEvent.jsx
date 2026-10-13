@@ -25,6 +25,13 @@ export default function EditEvent() {
   }
 
   function handleSubmit(updatedData) {
+    // to preserve the users id
+    const updatedEvent = {
+      ...event,
+      ...updatedData,
+      userId: event.userId,
+    };
+
     updateEvent(event.id, updatedData);
     navigate("/dashboard");
   }
